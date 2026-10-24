@@ -72,7 +72,7 @@ function Hero({ scroll }: { scroll: number }) {
         <p className="mt-3 text-lg text-muted-foreground sm:text-xl">Un pequeño homenaje para un gatito muy amado</p>
       </div>
 
-      <div className="relative z-10 mt-10 flex justify-center">
+      <div className="relative z-10 mt-24 flex justify-center">
         {/* arco */}
         <div className="pointer-events-none absolute -inset-x-16 -top-12 bottom-24 sm:-inset-x-24">
           {arc.map((_, i) => {

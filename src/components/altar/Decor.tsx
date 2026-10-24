@@ -50,7 +50,7 @@ export function Sparkles({ count = 30 }: { count?: number }) {
   );
 }
 
-const PICADO_COLORS = ["var(--rosa)", "var(--cempasuchil)", "var(--morado)", "var(--oro)", "var(--cielo)"];
+const PICADO_COLORS = ["var(--rosa)", "var(--cempasuchil)", "var(--crema)", "var(--oro)", "var(--cielo)"];
 
 function PicadoFlag({ color, i }: { color: string; i: number }) {
   return (
