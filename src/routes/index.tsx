@@ -42,7 +42,7 @@ function Intro({ onEnter }: { onEnter: () => void }) {
             aria-label="Tocar la naricita de Max para entrar"
             onClick={enter}
             className="anim-pulse-nose absolute h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-rosa/80 bg-rosa/20 transition-all duration-300 hover:scale-150 hover:bg-rosa/40 focus-visible:outline-2 focus-visible:outline-oro"
-            style={{ left: "69.4%", top: `${((1600 * 0.34 - 1600 * 0.12 * (901 / 901)) / 1000) * 100}%` }}
+            style={{ left: "69.4%", top: "42.4%" }}
           />
         </div>
       </div>
