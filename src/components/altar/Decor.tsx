@@ -86,7 +86,7 @@ export function PapelPicado({ flags = 14 }: { flags?: number }) {
       <div className="absolute left-0 right-0 top-1 h-0.5 bg-oro/70" />
       <div className="flex justify-center gap-1 sm:gap-2">
         {Array.from({ length: flags }).map((_, i) => (
-          <PicadoFlag key={i} i={i} color={PICADO_COLORS[i % PICADO_COLORS.length]} />
+          <PicadoFlag key={i} i={i} color={PICADO_COLORS[i % PICADO_COLORS.length]!} />
         ))}
       </div>
     </div>
@@ -205,7 +205,7 @@ export function Reveal({ children, className = "", delay = 0 }: { children: Reac
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && (setV(true), io.disconnect()), { threshold: 0.15 });
+    const io = new IntersectionObserver(([e]) => e?.isIntersecting && (setV(true), io.disconnect()), { threshold: 0.15 });
     io.observe(el);
     return () => io.disconnect();
   }, []);
