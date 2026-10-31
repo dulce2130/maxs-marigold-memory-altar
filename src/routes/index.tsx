@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import maxPhoto from "@/assets/max.png.asset.json";
-import { Cempasuchil, Paw, PawTrail, PapelPicado, Petals, Reveal, Sparkles, Veladora } from "@/components/altar/Decor";
+import { Cempasuchil, Hoja, Paw, PawTrail, PicadoStrips, Petals, Reveal, Sparkles, Veladora } from "@/components/altar/Decor";
+import { MaxIlustrado } from "@/components/altar/MaxIlustrado";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,37 +22,41 @@ const PHOTO = maxPhoto.url;
 
 function Intro({ onEnter }: { onEnter: () => void }) {
   const [opening, setOpening] = useState(false);
+  const [booped, setBooped] = useState(false);
   const enter = () => {
-    if (opening) return;
-    setOpening(true);
-    setTimeout(onEnter, 1600);
+    if (opening || booped) return;
+    setBooped(true);
+    setTimeout(() => setOpening(true), 550);
+    setTimeout(onEnter, 2000);
   };
+  const flowers = [
+    { x: 4, y: 78, s: 64 }, { x: 14, y: 50, s: 46 }, { x: 22, y: 92, s: 52 },
+    { x: 96, y: 74, s: 60 }, { x: 86, y: 46, s: 42 }, { x: 80, y: 94, s: 50 },
+  ];
   return (
     <div
-      className={`textura fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 px-4 transition-all duration-[1600ms] ${opening ? "scale-110 opacity-0" : ""}`}
-      style={{ background: "var(--gradient-night)" }}
+      className={`amate fixed inset-0 z-50 flex flex-col items-center overflow-hidden transition-all duration-[1400ms] ${opening ? "scale-105 opacity-0" : ""}`}
     >
-      <Sparkles count={40} />
-      <p className="font-script text-2xl text-terracota sm:text-3xl">Bienvenido</p>
-      <div className="relative">
-        <div className="absolute -inset-6 rounded-full bg-cempasuchil/20 blur-3xl" />
-        <div className="relative overflow-hidden rounded-[45%_45%_1.5rem_1.5rem] border-4 border-oro glow-warm" style={{ height: "min(58vh, 520px)", aspectRatio: "901 / 1000" }}>
-          <img src={PHOTO} alt="Max, gato siamés de ojos azules" className="absolute left-0 top-[-12%] w-full" />
-          <button
-            type="button"
-            aria-label="Tocar la naricita de Max para entrar"
-            onClick={enter}
-            className="anim-pulse-nose absolute h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-rosa/80 bg-rosa/20 transition-all duration-300 hover:scale-150 hover:bg-rosa/40 focus-visible:outline-2 focus-visible:outline-oro"
-            style={{ left: "69.4%", top: "42.4%" }}
-          />
+      <PicadoStrips />
+      <div className="flex flex-1 flex-col items-center justify-center gap-1 px-4 pb-6">
+        <div className="relative" style={{ height: "min(38vh, 300px)", aspectRatio: "200 / 230" }}>
+          <div className="absolute -inset-10 rounded-full opacity-50" style={{ background: "radial-gradient(circle, oklch(0.85 0.15 75 / .7), transparent 65%)" }} />
+          {flowers.map((f, i) => (
+            <div key={i} className="anim-float absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${f.x}%`, top: `${f.y}%`, animationDelay: `${i * 0.6}s`, animationDuration: "7s" }}>
+              <Cempasuchil size={f.s} />
+            </div>
+          ))}
+          <Hoja className="absolute left-[-6%] top-[64%] h-8 w-8 -rotate-45" />
+          <Hoja className="absolute right-[-6%] top-[60%] h-8 w-8 rotate-[200deg]" />
+          <MaxIlustrado booped={booped} onBoop={enter} />
         </div>
+        <p className="mt-4 font-script text-2xl text-terracota sm:text-3xl">Bienvenido</p>
+        <h1 className="text-center font-display text-4xl leading-tight text-foreground sm:text-5xl">Un altar para Max</h1>
+        <p className="mt-2 flex items-center gap-2 text-center text-base text-muted-foreground sm:text-lg">
+          <Paw className="h-4 w-4 text-rosa" /> Toca su naricita para entrar
+        </p>
       </div>
-      <h1 className="text-center font-display text-3xl text-foreground sm:text-4xl">
-        Toca la <span className="text-fiesta">naricita</span> de Max
-      </h1>
-      <p className="text-center text-muted-foreground">para entrar a su altar</p>
-      {opening && <Petals count={60} />}
-      {opening && <div className="pointer-events-none fixed inset-0 bg-cempasuchil/30 mix-blend-screen animate-in fade-in duration-1000" />}
+      {booped && <Petals count={45} />}
     </div>
   );
 }
@@ -63,8 +68,8 @@ function Hero({ scroll }: { scroll: number }) {
       <div className="absolute inset-0" style={{ transform: `translateY(${scroll * 0.3}px)` }}>
         <Sparkles count={50} />
       </div>
-      <div className="anim-spin-slow absolute top-[30%] h-[700px] w-[700px] rounded-full opacity-20" style={{ background: "conic-gradient(var(--cempasuchil), var(--rosa), var(--morado), var(--oro), var(--cempasuchil))", filter: "blur(80px)" }} />
-      <div className="relative z-10 w-full pt-0"><PapelPicado /></div>
+      <div className="absolute top-[30%] h-[600px] w-[600px] rounded-full opacity-30" style={{ background: "radial-gradient(circle, var(--cempasuchil), transparent 70%)", filter: "blur(60px)" }} />
+      <div className="relative z-10 w-full"><PicadoStrips /></div>
 
       <div className="relative z-10 mt-6 px-4 text-center animate-in fade-in slide-in-from-bottom-8 duration-1000">
         <p className="font-script text-2xl text-terracota sm:text-3xl">En memoria de</p>
