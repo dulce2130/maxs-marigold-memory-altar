@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import maxPhoto from "@/assets/max.png.asset.json";
+import fotoOjos from "@/assets/recuerdo-2.png.asset.json";
+import fotoSol from "@/assets/recuerdo-3.png.asset.json";
+import fotoCama from "@/assets/recuerdo-4.png.asset.json";
 import { Cempasuchil, Paw, PawTrail, PicadoStrips, Petals, Reveal, Sparkles, Veladora } from "@/components/altar/Decor";
 import { MaxIlustrado } from "@/components/altar/MaxIlustrado";
 
@@ -138,9 +141,9 @@ function NuestroMax() {
 
 function Recuerdos() {
   const cards = [
-    { pos: "50% 30%", q: "Esa mirada que lo decía todo", rot: "-2deg" },
-    { pos: "40% 55%", q: "Sentadito, esperando su comida favorita", rot: "1.5deg" },
-    { pos: "20% 42%", q: "Su colita siempre presumida", rot: "-1deg" },
+    { src: fotoCama.url, pos: "45% 55%", q: "Experto en encontrar el lugar más cómodo", rot: "-2.5deg", shift: "lg:mt-10", flor: "-left-5 -top-5" },
+    { src: fotoSol.url, pos: "55% 50%", q: "Tomando el solecito ☀️", rot: "1.8deg", shift: "lg:-mt-2", flor: "-right-5 -bottom-4" },
+    { src: fotoOjos.url, pos: "45% 30%", q: "Esos ojitos azules 💙", rot: "-1.2deg", shift: "lg:mt-16", flor: "-right-5 -top-5" },
   ];
   return (
     <section className="relative px-4 py-24">
@@ -148,13 +151,13 @@ function Recuerdos() {
         <p className="font-script text-3xl text-cempasuchil">Momentos especiales</p>
         <h2 className="font-display text-5xl text-foreground">Recuerdos</h2>
       </Reveal>
-      <div className="mx-auto mt-14 grid max-w-6xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto mt-14 grid max-w-6xl gap-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
         {cards.map((c, i) => (
-          <Reveal key={i} delay={i * 150}>
-            <figure className="card-altar group overflow-hidden p-3" style={{ rotate: c.rot }}>
-              <div className="relative h-72 overflow-hidden rounded-2xl">
-                <img src={PHOTO} alt={c.q} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" style={{ objectPosition: c.pos }} />
-                <div className="absolute right-2 top-2"><Cempasuchil size={40} /></div>
+          <Reveal key={i} delay={i * 150} className={c.shift}>
+            <figure className="card-altar group relative mx-auto max-w-sm p-3 transition-transform duration-500 hover:rotate-0" style={{ rotate: c.rot }}>
+              <div className={`absolute z-10 ${c.flor}`}><Cempasuchil size={44} /></div>
+              <div className="relative h-80 overflow-hidden rounded-xl">
+                <img src={c.src} alt={c.q} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: c.pos }} />
               </div>
               <figcaption className="px-2 py-4 text-center font-script text-2xl text-foreground">{c.q}</figcaption>
             </figure>
