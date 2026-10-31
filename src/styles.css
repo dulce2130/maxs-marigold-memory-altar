@@ -178,3 +178,9 @@
 @media (prefers-reduced-motion: reduce) {
   .anim-fall, .anim-sway, .cat-tail, .is-near .cat-ear-l, .is-booped svg, .is-booped .cat-nose, .anim-flicker, .anim-float, .anim-twinkle, .anim-spin-slow { animation: none; }
 }
+
+@keyframes max-boop { 0%,100% { transform: scale(1); } 40% { transform: scale(1.03); } 70% { transform: scale(.99); } }
+@keyframes nose-boop { 0% { transform: scale(.6); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+.max-boop { animation: max-boop .5s ease-out; }
+.nose-boop { animation: nose-boop .45s ease-out; }
+@media (prefers-reduced-motion: reduce) { .max-boop, .nose-boop { animation: none; } }

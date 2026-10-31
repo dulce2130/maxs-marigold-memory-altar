@@ -39,18 +39,11 @@ function Intro({ onEnter }: { onEnter: () => void }) {
     >
       <PicadoStrips />
       <div className="flex flex-1 flex-col items-center justify-center gap-1 px-4 pb-6">
-        <div className="relative" style={{ height: "min(38vh, 300px)", aspectRatio: "200 / 230" }}>
+        <div className="relative" style={{ width: "min(400px, 82vw, 46vh)", aspectRatio: "1 / 1" }}>
           <div className="absolute -inset-10 rounded-full opacity-50" style={{ background: "radial-gradient(circle, oklch(0.85 0.15 75 / .7), transparent 65%)" }} />
-          {flowers.map((f, i) => (
-            <div key={i} className="anim-float absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${f.x}%`, top: `${f.y}%`, animationDelay: `${i * 0.6}s`, animationDuration: "7s" }}>
-              <Cempasuchil size={f.s} />
-            </div>
-          ))}
-          <Hoja className="absolute left-[-6%] top-[64%] h-8 w-8 -rotate-45" />
-          <Hoja className="absolute right-[-6%] top-[60%] h-8 w-8 rotate-[200deg]" />
           <MaxIlustrado booped={booped} onBoop={enter} />
         </div>
-        <p className="mt-4 font-script text-2xl text-terracota sm:text-3xl">Bienvenido</p>
+        <p className="mt-1 font-script text-2xl text-terracota sm:text-3xl">Bienvenido</p>
         <h1 className="text-center font-display text-4xl leading-tight text-foreground sm:text-5xl">Un altar para Max</h1>
         <p className="mt-2 flex items-center gap-2 text-center text-base text-muted-foreground sm:text-lg">
           <Paw className="h-4 w-4 text-rosa" /> Toca su naricita para entrar
