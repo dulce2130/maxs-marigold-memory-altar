@@ -50,46 +50,82 @@ export function Sparkles({ count = 30 }: { count?: number }) {
   );
 }
 
-const PICADO_COLORS = ["var(--rosa)", "var(--cempasuchil)", "var(--crema)", "var(--oro)", "var(--cielo)"];
+const PICADO_COLORS = ["var(--rosa)", "var(--cempasuchil)", "var(--turquesa)", "var(--oro)", "var(--verde)"];
 
-function PicadoFlag({ color, i }: { color: string; i: number }) {
+function PicadoFlag({ color, i, s, h }: { color: string; i: number; s: number; h: string }) {
+  const j = (k: number, amt = 3) => (rand(i * 7 + k, s) - 0.5) * amt;
+  const id = `pm${s}-${i}`;
+  const design = i % 3;
   return (
     <div
-      className="anim-sway relative shrink-0 transition-transform duration-300 hover:scale-110"
-      style={{ animationDelay: `${i * 0.25}s`, animationDuration: `${3 + (i % 3)}s` }}
+      className="anim-sway relative shrink-0"
+      style={{ animationDelay: `${-rand(i, s) * 6}s`, animationDuration: `${6 + rand(i, s + 1) * 4}s`, rotate: `${j(1, 4)}deg` }}
     >
-      <svg viewBox="0 0 80 100" className="h-20 w-16 drop-shadow-lg sm:h-28 sm:w-24">
+      <svg viewBox="0 0 80 100" className={`${h} drop-shadow-[0_3px_3px_oklch(0.4_0.08_40/0.2)]`}>
         <defs>
-          <mask id={`m${i}`}>
+          <mask id={id}>
             <rect width="80" height="100" fill="white" />
-            <circle cx="40" cy="38" r="12" fill="black" />
-            <circle cx="35" cy="36" r="3" fill="white" />
-            <circle cx="45" cy="36" r="3" fill="white" />
-            <path d="M37 44 L40 41 L43 44" fill="white" />
-            {[15, 30, 50, 65].map((x) => (
-              <path key={x} d={`M${x} 68 l5 -6 l5 6 l-5 6z`} fill="black" />
+            {design === 0 && (
+              <g fill="black">
+                {[0, 1, 2, 3, 4, 5].map((p) => (
+                  <ellipse key={p} cx={40 + j(2)} cy={44} rx="5" ry="11" transform={`rotate(${p * 60 + j(p)} 40 44) translate(0 -9)`} />
+                ))}
+                <circle cx="40" cy="44" r="3" fill="white" />
+              </g>
+            )}
+            {design === 1 && (
+              <path fill="black" d={`M40 ${60 + j(3)} C${18 + j(4)} 44 ${26 + j(5)} 24 40 36 C${54 + j(6)} 24 ${62 + j(7)} 44 40 ${60 + j(3)}Z`} />
+            )}
+            {design === 2 && (
+              <g fill="black">
+                <path d={`M40 22 L${52 + j(8)} 44 L40 66 L${28 + j(9)} 44Z`} />
+                <circle cx="40" cy="44" r="5" fill="white" />
+              </g>
+            )}
+            {[12, 26, 40, 54, 68].map((x, k) => (
+              <circle key={x} cx={x + j(k + 10, 2)} cy={12 + j(k + 20, 2)} r={2 + rand(i + k, s) * 1.5} fill="black" />
             ))}
-            {[12, 26, 40, 54, 68].map((x) => (
-              <circle key={x} cx={x} cy="14" r="3" fill="black" />
+            {[16, 32, 48, 64].map((x, k) => (
+              <path key={x} d={`M${x} ${76 + j(k + 30, 2)} l4 -5 l4 5 l-4 5z`} fill="black" />
             ))}
           </mask>
         </defs>
-        <path d="M0 0 H80 V86 L70 100 L60 86 L50 100 L40 86 L30 100 L20 86 L10 100 L0 86 Z" fill={color} mask={`url(#m${i})`} />
+        <path d={`M0 0 H80 V${86 + j(40)} L70 98 L60 ${86 + j(41)} L50 98 L40 ${86 + j(42)} L30 98 L20 ${86 + j(43)} L10 98 L0 86 Z`} fill={color} mask={`url(#${id})`} opacity=".93" />
       </svg>
     </div>
   );
 }
 
-export function PapelPicado({ flags = 14 }: { flags?: number }) {
+export function PapelPicado({ flags = 14, seed = 1, size = "h-20 w-16 sm:h-28 sm:w-24", offset = 0 }: { flags?: number; seed?: number; size?: string; offset?: number }) {
   return (
     <div aria-hidden className="relative w-full overflow-hidden">
-      <div className="absolute left-0 right-0 top-1 h-0.5 bg-oro/70" />
-      <div className="flex justify-center gap-1 sm:gap-2">
+      <div className="absolute left-0 right-0 top-0.5 h-px bg-terracota/60" />
+      <div className="flex justify-center gap-0.5 sm:gap-1">
         {Array.from({ length: flags }).map((_, i) => (
-          <PicadoFlag key={i} i={i} color={PICADO_COLORS[i % PICADO_COLORS.length]!} />
+          <PicadoFlag key={i} i={i} s={seed} h={size} color={PICADO_COLORS[(i + offset) % PICADO_COLORS.length]!} />
         ))}
       </div>
     </div>
+  );
+}
+
+/** Varias tiras superpuestas de distintos tamaños. */
+export function PicadoStrips() {
+  return (
+    <div aria-hidden className="pointer-events-none relative h-24 w-full shrink-0 sm:h-36">
+      <div className="absolute inset-x-0 top-0 z-30"><PapelPicado seed={1} flags={22} size="h-12 w-9 sm:h-16 sm:w-12" /></div>
+      <div className="absolute inset-x-0 top-3 z-20 -translate-x-4 opacity-95 sm:top-5"><PapelPicado seed={2} flags={16} offset={2} size="h-16 w-12 sm:h-24 sm:w-[4.5rem]" /></div>
+      <div className="absolute inset-x-0 top-1 z-10 translate-x-6 opacity-80"><PapelPicado seed={3} flags={12} offset={4} size="h-20 w-16 sm:h-32 sm:w-24" /></div>
+    </div>
+  );
+}
+
+export function Hoja({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" className={className} aria-hidden>
+      <path d="M4 28 C4 12 14 4 28 4 C28 18 20 28 4 28Z" fill="var(--verde)" />
+      <path d="M6 26 L24 8" stroke="oklch(0.4 0.08 145)" strokeWidth="1" />
+    </svg>
   );
 }
 

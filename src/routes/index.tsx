@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import maxPhoto from "@/assets/max.png.asset.json";
-import { Cempasuchil, Paw, PawTrail, PapelPicado, Petals, Reveal, Sparkles, Veladora } from "@/components/altar/Decor";
+import { Cempasuchil, Hoja, Paw, PawTrail, PicadoStrips, Petals, Reveal, Sparkles, Veladora } from "@/components/altar/Decor";
+import { MaxIlustrado } from "@/components/altar/MaxIlustrado";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,37 +22,41 @@ const PHOTO = maxPhoto.url;
 
 function Intro({ onEnter }: { onEnter: () => void }) {
   const [opening, setOpening] = useState(false);
+  const [booped, setBooped] = useState(false);
   const enter = () => {
-    if (opening) return;
-    setOpening(true);
-    setTimeout(onEnter, 1600);
+    if (opening || booped) return;
+    setBooped(true);
+    setTimeout(() => setOpening(true), 550);
+    setTimeout(onEnter, 2000);
   };
+  const flowers = [
+    { x: 4, y: 78, s: 64 }, { x: 14, y: 50, s: 46 }, { x: 22, y: 92, s: 52 },
+    { x: 96, y: 74, s: 60 }, { x: 86, y: 46, s: 42 }, { x: 80, y: 94, s: 50 },
+  ];
   return (
     <div
-      className={`textura fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 px-4 transition-all duration-[1600ms] ${opening ? "scale-110 opacity-0" : ""}`}
-      style={{ background: "var(--gradient-night)" }}
+      className={`amate fixed inset-0 z-50 flex flex-col items-center overflow-hidden transition-all duration-[1400ms] ${opening ? "scale-105 opacity-0" : ""}`}
     >
-      <Sparkles count={40} />
-      <p className="font-script text-2xl text-oro sm:text-3xl">Bienvenido</p>
-      <div className="relative">
-        <div className="absolute -inset-6 rounded-full bg-cempasuchil/20 blur-3xl" />
-        <div className="relative overflow-hidden rounded-[45%_45%_1.5rem_1.5rem] border-4 border-oro glow-warm" style={{ height: "min(58vh, 520px)", aspectRatio: "901 / 1000" }}>
-          <img src={PHOTO} alt="Max, gato siamés de ojos azules" className="absolute left-0 top-[-12%] w-full" />
-          <button
-            type="button"
-            aria-label="Tocar la naricita de Max para entrar"
-            onClick={enter}
-            className="anim-pulse-nose absolute h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-rosa/80 bg-rosa/20 transition-all duration-300 hover:scale-150 hover:bg-rosa/40 focus-visible:outline-2 focus-visible:outline-oro"
-            style={{ left: "69.4%", top: "42.4%" }}
-          />
+      <PicadoStrips />
+      <div className="flex flex-1 flex-col items-center justify-center gap-1 px-4 pb-6">
+        <div className="relative" style={{ height: "min(38vh, 300px)", aspectRatio: "200 / 230" }}>
+          <div className="absolute -inset-10 rounded-full opacity-50" style={{ background: "radial-gradient(circle, oklch(0.85 0.15 75 / .7), transparent 65%)" }} />
+          {flowers.map((f, i) => (
+            <div key={i} className="anim-float absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${f.x}%`, top: `${f.y}%`, animationDelay: `${i * 0.6}s`, animationDuration: "7s" }}>
+              <Cempasuchil size={f.s} />
+            </div>
+          ))}
+          <Hoja className="absolute left-[-6%] top-[64%] h-8 w-8 -rotate-45" />
+          <Hoja className="absolute right-[-6%] top-[60%] h-8 w-8 rotate-[200deg]" />
+          <MaxIlustrado booped={booped} onBoop={enter} />
         </div>
+        <p className="mt-4 font-script text-2xl text-terracota sm:text-3xl">Bienvenido</p>
+        <h1 className="text-center font-display text-4xl leading-tight text-foreground sm:text-5xl">Un altar para Max</h1>
+        <p className="mt-2 flex items-center gap-2 text-center text-base text-muted-foreground sm:text-lg">
+          <Paw className="h-4 w-4 text-rosa" /> Toca su naricita para entrar
+        </p>
       </div>
-      <h1 className="text-center font-display text-3xl text-crema sm:text-4xl">
-        Toca la <span className="text-fiesta">naricita</span> de Max
-      </h1>
-      <p className="text-center text-muted-foreground">para entrar a su altar</p>
-      {opening && <Petals count={60} />}
-      {opening && <div className="pointer-events-none fixed inset-0 bg-cempasuchil/30 mix-blend-screen animate-in fade-in duration-1000" />}
+      {booped && <Petals count={45} />}
     </div>
   );
 }
@@ -63,11 +68,11 @@ function Hero({ scroll }: { scroll: number }) {
       <div className="absolute inset-0" style={{ transform: `translateY(${scroll * 0.3}px)` }}>
         <Sparkles count={50} />
       </div>
-      <div className="anim-spin-slow absolute top-[30%] h-[700px] w-[700px] rounded-full opacity-20" style={{ background: "conic-gradient(var(--cempasuchil), var(--rosa), var(--morado), var(--oro), var(--cempasuchil))", filter: "blur(80px)" }} />
-      <div className="relative z-10 w-full pt-0"><PapelPicado /></div>
+      <div className="absolute top-[30%] h-[600px] w-[600px] rounded-full opacity-30" style={{ background: "radial-gradient(circle, var(--cempasuchil), transparent 70%)", filter: "blur(60px)" }} />
+      <div className="relative z-10 w-full"><PicadoStrips /></div>
 
       <div className="relative z-10 mt-6 px-4 text-center animate-in fade-in slide-in-from-bottom-8 duration-1000">
-        <p className="font-script text-2xl text-oro sm:text-3xl">En memoria de</p>
+        <p className="font-script text-2xl text-terracota sm:text-3xl">En memoria de</p>
         <h1 className="font-display text-7xl leading-none text-fiesta drop-shadow-[0_4px_30px_oklch(0.76_0.18_60/0.4)] sm:text-9xl">Max</h1>
         <p className="mt-3 text-lg text-muted-foreground sm:text-xl">Un pequeño homenaje para un gatito muy amado</p>
       </div>
@@ -86,9 +91,9 @@ function Hero({ scroll }: { scroll: number }) {
         </div>
         <div className="group relative">
           <div className="absolute -inset-4 rounded-t-full bg-gradient-to-b from-oro/50 to-rosa/30 blur-2xl transition-all duration-700 group-hover:-inset-8 group-hover:from-oro/80" />
-          <div className="relative h-[380px] w-[260px] overflow-hidden rounded-t-full border-[6px] border-oro bg-noche sm:h-[460px] sm:w-[320px]">
+          <div className="relative h-[380px] w-[260px] overflow-hidden rounded-t-full border-[6px] border-oro bg-terracota sm:h-[460px] sm:w-[320px]">
             <img src={PHOTO} alt="Retrato de Max" className="h-full w-full object-cover object-[50%_28%] transition-transform duration-1000 group-hover:scale-110" />
-            <div className="absolute inset-0 bg-gradient-to-t from-morado/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-terracota/60 via-transparent to-transparent" />
             <p className="absolute bottom-4 w-full text-center font-script text-3xl text-crema">Max</p>
           </div>
         </div>
@@ -97,7 +102,7 @@ function Hero({ scroll }: { scroll: number }) {
       <div className="relative z-10 mt-8 flex items-end gap-6 sm:gap-10">
         <Veladora /><Veladora big /><Cempasuchil size={56} /><Veladora big /><Veladora />
       </div>
-      <a href="#nuestro-max" className="relative z-10 mt-12 flex flex-col items-center gap-2 text-oro transition-transform hover:scale-110">
+      <a href="#nuestro-max" className="relative z-10 mt-12 flex flex-col items-center gap-2 text-terracota transition-transform hover:scale-110">
         <span className="text-sm tracking-widest">RECORDARLO</span>
         <Paw className="anim-float h-6 w-6" />
       </a>
@@ -117,9 +122,9 @@ function NuestroMax() {
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
         <Reveal>
           <p className="font-script text-3xl text-rosa">Siempre en nuestro corazón</p>
-          <h2 className="mt-2 font-display text-5xl text-crema sm:text-6xl">Nuestro Max</h2>
+          <h2 className="mt-2 font-display text-5xl text-foreground sm:text-6xl">Nuestro Max</h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            Max fue un gatito muy especial: un <strong className="text-oro">siamés mestizo</strong> de hermosos <strong className="text-cielo">ojos azules</strong>, elegante presencia y una personalidad inolvidable. Flojito, adorable y siempre exigente con su comida, dejó huellitas para siempre en nuestro corazón.
+            Max fue un gatito muy especial: un <strong className="text-terracota">siamés mestizo</strong> de hermosos <strong className="text-cielo">ojos azules</strong>, elegante presencia y una personalidad inolvidable. Flojito, adorable y siempre exigente con su comida, dejó huellitas para siempre en nuestro corazón.
           </p>
           <PawTrail />
         </Reveal>
@@ -128,7 +133,7 @@ function NuestroMax() {
             <Reveal key={x.t} delay={i * 120}>
               <div className="card-altar h-full p-5">
                 <Paw className="h-6 w-6 text-cempasuchil" />
-                <h3 className="mt-3 font-display text-xl text-oro">{x.t}</h3>
+                <h3 className="mt-3 font-display text-xl text-terracota">{x.t}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{x.d}</p>
               </div>
             </Reveal>
@@ -149,7 +154,7 @@ function Recuerdos() {
     <section className="relative px-4 py-24">
       <Reveal className="text-center">
         <p className="font-script text-3xl text-cempasuchil">Momentos especiales</p>
-        <h2 className="font-display text-5xl text-crema">Recuerdos</h2>
+        <h2 className="font-display text-5xl text-foreground">Recuerdos</h2>
       </Reveal>
       <div className="mx-auto mt-14 grid max-w-6xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((c, i) => (
@@ -159,7 +164,7 @@ function Recuerdos() {
                 <img src={PHOTO} alt={c.q} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" style={{ objectPosition: c.pos }} />
                 <div className="absolute right-2 top-2"><Cempasuchil size={40} /></div>
               </div>
-              <figcaption className="px-2 py-4 text-center font-script text-2xl text-crema">{c.q}</figcaption>
+              <figcaption className="px-2 py-4 text-center font-script text-2xl text-foreground">{c.q}</figcaption>
             </figure>
           </Reveal>
         ))}
@@ -177,11 +182,11 @@ function Ofrenda() {
     { e: "huella", t: "Huellitas", d: "Las que dejó en cada rincón." },
   ];
   return (
-    <section className="relative overflow-hidden px-4 py-24" style={{ background: "linear-gradient(180deg, transparent, oklch(0.25 0.1 305 / .6), transparent)" }}>
+    <section className="relative overflow-hidden px-4 py-24" style={{ background: "linear-gradient(180deg, transparent, oklch(0.88 0.07 70 / .6), transparent)" }}>
       <Sparkles count={25} />
       <Reveal className="text-center">
-        <p className="font-script text-3xl text-oro">Lo que le ofrecemos</p>
-        <h2 className="font-display text-5xl text-crema">La ofrenda</h2>
+        <p className="font-script text-3xl text-terracota">Lo que le ofrecemos</p>
+        <h2 className="font-display text-5xl text-foreground">La ofrenda</h2>
       </Reveal>
 
       {/* altar escalonado */}
@@ -190,13 +195,13 @@ function Ofrenda() {
           <div className="flex items-end gap-4"><Cempasuchil size={44} /><div className="h-28 w-20 overflow-hidden rounded-t-full border-4 border-oro transition-all duration-500 hover:glow-warm"><img src={PHOTO} alt="Retrato pequeño de Max" className="h-full w-full object-cover object-[60%_30%]" /></div><Cempasuchil size={44} /></div>
           <div className="h-5 w-56 rounded-sm bg-rosa shadow-lg" />
           <div className="flex items-end gap-6 pt-3"><Veladora /><Veladora /><button type="button" onClick={() => setPlate((p) => !p)} className="group relative flex flex-col items-center transition-transform hover:scale-110" aria-label="El platito de Max">
-            <span className={`absolute -top-12 whitespace-nowrap rounded-full bg-crema px-3 py-1 text-xs font-bold text-noche transition-all ${plate ? "opacity-100" : "opacity-0 group-hover:opacity-70"}`}>{plate ? "¡Solo del bueno, como le gustaba!" : "Su platito"}</span>
+            <span className={`absolute -top-12 whitespace-nowrap rounded-full bg-crema px-3 py-1 text-xs font-bold text-foreground transition-all ${plate ? "opacity-100" : "opacity-0 group-hover:opacity-70"}`}>{plate ? "¡Solo del bueno, como le gustaba!" : "Su platito"}</span>
             <div className="flex gap-1">{[0, 1, 2].map((k) => <span key={k} className="h-3 w-4 rounded-full bg-cempasuchil" />)}</div>
             <div className="h-4 w-20 rounded-b-full bg-cielo" />
           </button><Veladora /><Veladora /></div>
           <div className="h-5 w-80 rounded-sm bg-cempasuchil shadow-lg sm:w-[28rem]" />
           <div className="flex items-end gap-3 pt-3">{Array.from({ length: 7 }).map((_, i) => i % 2 ? <Cempasuchil key={i} size={50} /> : <Veladora key={i} />)}</div>
-          <div className="h-5 w-[20rem] rounded-sm bg-morado shadow-lg sm:w-[40rem]" style={{ boxShadow: "0 10px 40px oklch(0 0 0 / .5)" }} />
+          <div className="h-5 w-[20rem] rounded-sm bg-turquesa shadow-lg sm:w-[40rem]" style={{ boxShadow: "0 10px 40px oklch(0 0 0 / .5)" }} />
         </div>
       </Reveal>
 
@@ -210,7 +215,7 @@ function Ofrenda() {
                 {it.e === "picado" && <div className="anim-sway h-16 w-14 bg-rosa [clip-path:polygon(0_0,100%_0,100%_80%,80%_100%,60%_80%,40%_100%,20%_80%,0_100%)]" />}
                 {it.e === "huella" && <Paw className="h-14 w-14 text-rosa transition-transform hover:scale-125 hover:rotate-12" />}
               </div>
-              <h3 className="mt-4 font-display text-xl text-oro">{it.t}</h3>
+              <h3 className="mt-4 font-display text-xl text-terracota">{it.t}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{it.d}</p>
             </div>
           </Reveal>
@@ -227,7 +232,7 @@ function Despedida() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 transition-all duration-1000" style={{ background: `radial-gradient(ellipse at 50% 100%, oklch(0.76 0.18 60 / ${0.15 + Math.min(lit, 12) * 0.04}), transparent 70%)` }} />
       <Reveal>
         <p className="font-script text-3xl text-rosa">Hasta pronto, pequeño</p>
-        <h2 className="mx-auto mt-2 max-w-3xl font-display text-4xl leading-tight text-crema sm:text-6xl">
+        <h2 className="mx-auto mt-2 max-w-3xl font-display text-4xl leading-tight text-foreground sm:text-6xl">
           Las huellitas de <span className="text-fiesta">Max</span> siguen con nosotros
         </h2>
         <button
@@ -247,7 +252,7 @@ function Despedida() {
           ))}
         </div>
         <div className="mt-12 flex justify-center gap-3">{[0, 1, 2, 3, 4].map((i) => <Cempasuchil key={i} size={36} />)}</div>
-        <p className="mt-8 font-script text-2xl text-oro">Gracias por acompañar el recuerdo de Max</p>
+        <p className="mt-8 font-script text-2xl text-terracota">Gracias por acompañar el recuerdo de Max</p>
       </Reveal>
     </footer>
   );
