@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import maxPhoto from "@/assets/max.png.asset.json";
-import { Cempasuchil, Hoja, Paw, PawTrail, PicadoStrips, Petals, Reveal, Sparkles, Veladora } from "@/components/altar/Decor";
+import { Cempasuchil, Paw, PawTrail, PicadoStrips, Petals, Reveal, Sparkles, Veladora } from "@/components/altar/Decor";
 import { MaxIlustrado } from "@/components/altar/MaxIlustrado";
 
 export const Route = createFileRoute("/")({
@@ -40,7 +40,6 @@ function Intro({ onEnter }: { onEnter: () => void }) {
       <PicadoStrips />
       <div className="flex flex-1 flex-col items-center justify-center gap-1 px-4 pb-6">
         <div className="relative" style={{ width: "min(400px, 82vw, 46vh)", aspectRatio: "1 / 1" }}>
-          <div className="absolute -inset-10 rounded-full opacity-50" style={{ background: "radial-gradient(circle, oklch(0.85 0.15 75 / .7), transparent 65%)" }} />
           <MaxIlustrado booped={booped} onBoop={enter} />
         </div>
         <p className="mt-1 font-script text-2xl text-terracota sm:text-3xl">Bienvenido</p>
