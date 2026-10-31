@@ -91,7 +91,7 @@ function Hero({ scroll }: { scroll: number }) {
         </div>
         <div className="group relative">
           <div className="absolute -inset-4 rounded-t-full bg-gradient-to-b from-oro/50 to-rosa/30 blur-2xl transition-all duration-700 group-hover:-inset-8 group-hover:from-oro/80" />
-          <div className="relative h-[380px] w-[260px] overflow-hidden rounded-t-full border-[6px] border-oro bg-noche sm:h-[460px] sm:w-[320px]">
+          <div className="relative h-[380px] w-[260px] overflow-hidden rounded-t-full border-[6px] border-oro bg-terracota sm:h-[460px] sm:w-[320px]">
             <img src={PHOTO} alt="Retrato de Max" className="h-full w-full object-cover object-[50%_28%] transition-transform duration-1000 group-hover:scale-110" />
             <div className="absolute inset-0 bg-gradient-to-t from-terracota/60 via-transparent to-transparent" />
             <p className="absolute bottom-4 w-full text-center font-script text-3xl text-crema">Max</p>
